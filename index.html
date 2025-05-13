@@ -7,7 +7,7 @@
     <style>
       @font-face {
         font-family: 'Monigue';
-        src: url('https://cdn.glitch.global/7047dd54-eeb1-457a-b929-8a7ab8c4e188/monigue.otf') format('truetype');
+        src: url('./assets/monigue.otf') format('truetype');
         font-weight: normal;
         font-style: normal;
       }
@@ -141,7 +141,7 @@
 
       const mindarThree = new MindARThree({
         container: document.querySelector("#container"),
-        imageTargetSrc: "https://cdn.glitch.global/54b42285-7e55-4d41-ab1d-35d874381374/targets-contraste-escala6.mind"
+        imageTargetSrc: "./assets/targets-contraste-escala6.mind"
       });
 
       const { renderer, scene, camera } = mindarThree;
