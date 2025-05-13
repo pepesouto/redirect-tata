@@ -152,7 +152,7 @@
           yaMostrado = true;
 
           const video = document.createElement("video");
-          video.src = "https://cdn.glitch.global/7047dd54-eeb1-457a-b929-8a7ab8c4e188/fondo%20animado%20runway.webm";
+          video.src = "./assets/fondo-animado-runway.webm";
           video.autoplay = true;
           video.muted = true;
           video.loop = true;
@@ -196,7 +196,7 @@
             grupoBolsaFrase.id = "grupoBolsaFrase";
 
             const imagenBolsa = document.createElement("img");
-            imagenBolsa.src = "https://cdn.glitch.global/7047dd54-eeb1-457a-b929-8a7ab8c4e188/bolsa_estilo_tata_suave.png";
+            imagenBolsa.src = "./assets/bolsa_estilo_tata_suave.png";
             imagenBolsa.alt = "Bolsa";
             Object.assign(imagenBolsa.style, {
               position: "relative",
@@ -207,16 +207,16 @@
 
             const imagenFrase01 = document.createElement("img");
             const frases = [
-              "https://cdn.glitch.global/54b42285-7e55-4d41-ab1d-35d874381374/frase-01.png",
-              "https://cdn.glitch.global/54b42285-7e55-4d41-ab1d-35d874381374/frase-02.png",
-              "https://cdn.glitch.global/54b42285-7e55-4d41-ab1d-35d874381374/frase-03.png",
-              "https://cdn.glitch.global/54b42285-7e55-4d41-ab1d-35d874381374/frase-04.png",
-              "https://cdn.glitch.global/54b42285-7e55-4d41-ab1d-35d874381374/frase-05.png",
-              "https://cdn.glitch.global/54b42285-7e55-4d41-ab1d-35d874381374/frase-06.png",
-              "https://cdn.glitch.global/54b42285-7e55-4d41-ab1d-35d874381374/frase-07.png",
-              "https://cdn.glitch.global/54b42285-7e55-4d41-ab1d-35d874381374/frase-08.png",
-              "https://cdn.glitch.global/54b42285-7e55-4d41-ab1d-35d874381374/frase-09.png",
-              "https://cdn.glitch.global/54b42285-7e55-4d41-ab1d-35d874381374/frase-10.png"
+              "./assets/frase-01.png",
+              "./assets/frase-02.png",
+              "./assets/frase-03.png",
+              "./assets/frase-04.png",
+              "./assets/frase-05.png",
+              "./assets/frase-06.png",
+              "./assets/frase-07.png",
+              "./assets/frase-08.png",
+              "./assets/frase-09.png",
+              "./assets/frase-10.png"
             ];
 
             const fraseRandom = frases[Math.floor(Math.random() * frases.length)];
