@@ -2,10 +2,294 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="refresh" content="0; url=https://www.tata.com.uy/" />
-    <title>Redirigiendo...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Día de la Madre Tata</title>
+    <style>
+      @font-face {
+        font-family: 'Monigue';
+        src: url('https://cdn.glitch.global/7047dd54-eeb1-457a-b929-8a7ab8c4e188/monigue.otf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        touch-action: none;
+        background-color: black;
+        font-family: 'Monigue', sans-serif;
+      }
+
+      #container {
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+      }
+
+      #overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(255, 0, 0, 0.95);
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        text-align: center;
+        padding: 1rem;
+        box-sizing: border-box;
+      }
+
+      #overlay p {
+        font-size: 1.5rem;
+        margin: 0 0 1.5rem 0;
+        line-height: 1.4;
+      }
+
+      #overlay button {
+        padding: 1em 2em;
+        font-size: 1.5em;
+        background-color: white;
+        color: red;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: inherit;
+      }
+
+      #protector {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: red;
+        z-index: 2000;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        display: none;
+      }
+
+      #boton-sorteo {
+        position: fixed;
+        bottom: 3rem;
+        left: 50%;
+        transform: translateX(-50%) scale(0.6);
+        background-color: red;
+        color: white;
+        padding: 1.2em 1em;
+        font-size: 1.5em;
+        font-family: inherit;
+        border: 2px solid white;
+        border-radius: 12px;
+        text-align: center;
+        text-decoration: none;
+        z-index: 1500;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        display: block;
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.6s ease, opacity 0.6s ease;
+        line-height: 1.3;
+      }
+
+      #boton-sorteo.visible {
+        transform: translateX(-50%) scale(1);
+        opacity: 1;
+        pointer-events: auto;
+      }
+    </style>
+
+    <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+        "mindar-image-three": "https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-three.prod.js"
+      }
+    }
+    </script>
   </head>
   <body>
-    <p>Redirigiendo... Si no pasa nada, <a href="https://www.tata.com.uy/">hacé clic acá</a>.</p>
+    <div id="overlay">
+      <p>Tocá el botón y activá la cámara</p>
+      <button id="boton-comenzar">Empezar</button>
+    </div>
+
+    <div id="protector"></div>
+
+    <a id="boton-sorteo" href="https://clientesplus.typeform.com/to/plwd5POD" target="_blank">
+      ¡Quiero participar<br>del sorteo!
+    </a>
+
+    <div id="container"></div>
+
+    <script type="module">
+      import * as THREE from 'three';
+      import { MindARThree } from 'mindar-image-three';
+
+      let yaMostrado = false;
+
+      const mindarThree = new MindARThree({
+        container: document.querySelector("#container"),
+        imageTargetSrc: "https://cdn.glitch.global/54b42285-7e55-4d41-ab1d-35d874381374/targets-contraste-escala6.mind"
+      });
+
+      const { renderer, scene, camera } = mindarThree;
+      const anchor = mindarThree.addAnchor(0);
+
+      anchor.onTargetFound = () => {
+        if (!yaMostrado) {
+          yaMostrado = true;
+
+          const video = document.createElement("video");
+          video.src = "https://cdn.glitch.global/7047dd54-eeb1-457a-b929-8a7ab8c4e188/fondo%20animado%20runway.webm";
+          video.autoplay = true;
+          video.muted = true;
+          video.loop = true;
+          video.playsInline = true;
+          video.setAttribute("id", "fondo-animado");
+
+          Object.assign(video.style, {
+            position: "fixed",
+            top: "0",
+            left: "0",
+            width: "100vw",
+            height: "100vh",
+            objectFit: "cover",
+            zIndex: "999",
+            pointerEvents: "none",
+            opacity: "0",
+            transform: "scale(1.1)",
+            transition: "opacity 1.2s ease, transform 1.2s ease",
+            display: "block",
+            touchAction: "none"
+          });
+
+          document.body.appendChild(video);
+
+          video.addEventListener("canplay", () => {
+            video.style.opacity = "1";
+            video.style.transform = "scale(1)";
+
+            const grupoBolsaFrase = document.createElement("div");
+            Object.assign(grupoBolsaFrase.style, {
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-45%, -100vh) scale(0.8)",  // empieza arriba y mas chiquito
+              transition: "transform 1.5s ease-out 1s",
+              width: "auto",
+              height: "auto",
+              zIndex: "1001",
+              pointerEvents: "none"
+            });
+            grupoBolsaFrase.id = "grupoBolsaFrase";
+
+            const imagenBolsa = document.createElement("img");
+            imagenBolsa.src = "https://cdn.glitch.global/7047dd54-eeb1-457a-b929-8a7ab8c4e188/bolsa_estilo_tata_suave.png";
+            imagenBolsa.alt = "Bolsa";
+            Object.assign(imagenBolsa.style, {
+              position: "relative",
+              width: "auto",
+              height: "60vh",
+              display: "block"
+            });
+
+            const imagenFrase01 = document.createElement("img");
+            const frases = [
+              "https://cdn.glitch.global/54b42285-7e55-4d41-ab1d-35d874381374/frase-01.png",
+              "https://cdn.glitch.global/54b42285-7e55-4d41-ab1d-35d874381374/frase-02.png",
+              "https://cdn.glitch.global/54b42285-7e55-4d41-ab1d-35d874381374/frase-03.png",
+              "https://cdn.glitch.global/54b42285-7e55-4d41-ab1d-35d874381374/frase-04.png",
+              "https://cdn.glitch.global/54b42285-7e55-4d41-ab1d-35d874381374/frase-05.png",
+              "https://cdn.glitch.global/54b42285-7e55-4d41-ab1d-35d874381374/frase-06.png",
+              "https://cdn.glitch.global/54b42285-7e55-4d41-ab1d-35d874381374/frase-07.png",
+              "https://cdn.glitch.global/54b42285-7e55-4d41-ab1d-35d874381374/frase-08.png",
+              "https://cdn.glitch.global/54b42285-7e55-4d41-ab1d-35d874381374/frase-09.png",
+              "https://cdn.glitch.global/54b42285-7e55-4d41-ab1d-35d874381374/frase-10.png"
+            ];
+
+            const fraseRandom = frases[Math.floor(Math.random() * frases.length)];
+            imagenFrase01.src = fraseRandom;
+            imagenFrase01.alt = "Frase";
+            Object.assign(imagenFrase01.style, {
+              position: "absolute",
+              top: "57%",
+              left: "45%",
+              transform: "translateX(-50%)",
+              width: "30vh",
+              height: "auto",
+              zIndex: "1"
+            });
+
+            grupoBolsaFrase.appendChild(imagenBolsa);
+            grupoBolsaFrase.appendChild(imagenFrase01);
+            document.body.appendChild(grupoBolsaFrase);
+
+            // Animar entrada desde arriba
+            setTimeout(() => {
+            grupoBolsaFrase.style.transform = "translate(-45%, -75%) scale(1.2)";
+            }, 1000); // leve delay para que se aplique transición
+
+            // Mostrar botón flotante
+            const botonSorteo = document.getElementById("boton-sorteo");
+            setTimeout(() => {
+              botonSorteo.classList.add("visible");
+            }, 4000);
+          });
+        }
+      };
+
+      const iniciarAR = async () => {
+        await mindarThree.start();
+        const realVideo = document.querySelector("video");
+        if (realVideo) {
+          realVideo.style.position = "absolute";
+          realVideo.style.top = "0";
+          realVideo.style.left = "0";
+          realVideo.style.width = "100vw";
+          realVideo.style.height = "100vh";
+          realVideo.style.objectFit = "cover";
+          realVideo.style.zIndex = "0";
+        }
+
+        renderer.setAnimationLoop(() => {
+          renderer.render(scene, camera);
+        });
+      };
+
+      document.getElementById("boton-comenzar").addEventListener("click", async () => {
+        const protector = document.getElementById("protector");
+        protector.style.display = "block";
+        protector.style.opacity = "1";
+        document.getElementById("overlay").style.display = "none";
+
+        await iniciarAR();
+
+        setTimeout(() => {
+          protector.style.opacity = "0";
+        }, 500);
+
+        setTimeout(() => {
+          protector.remove();
+        }, 1200);
+      });
+    </script>
+
+    <script>
+      document.addEventListener('gesturestart', e => e.preventDefault());
+      document.addEventListener('gesturechange', e => e.preventDefault());
+      document.addEventListener('gestureend', e => e.preventDefault());
+    </script>
   </body>
 </html>
